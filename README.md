@@ -23,4 +23,7 @@ yarn lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-Se a URL não funcionar acesse o arquivo api.js em src e atualize o servidor pela URL da sua API PHP
+### **OBS.:** 
+
+- Se a URL para integrar com a API PHP não funcionar acesse [src/router/index.js](src/router/index.js) e atualize `baseUrl` pela URL da sua API PHP;
+- Dentro da página de `Detalhes do usuário` quando clicar em `Salvar Localmente` irá gerar um diretório `data/user.json` dentro de `public` na aplicação da API.
