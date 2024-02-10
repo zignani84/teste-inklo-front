@@ -48,5 +48,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### **OBS.:** 
 
+- Usei a versão `Node v19.8.1` mas na engine do projeto é compatível com `v14.17.0+` (qualquer problema remova o trecho inteiro de `"engines"` no `package.json`);
 - Se a URL para integrar com a API PHP não funcionar acesse [src/router/index.js](src/router/index.js) e atualize `baseUrl` pela URL da sua API PHP;
 - Dentro da página de `Detalhes do usuário` quando clicar em `Salvar Localmente` irá gerar um diretório `data/user.json` dentro de `public` na aplicação da API.
