@@ -1,0 +1,22 @@
+/* List */
+.user-avatar {
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-right: 10px;
+}
+
+.table-title {
+    font-weight: bold;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
