@@ -1,36 +1,54 @@
 <template>
     <div class="container mt-4">
         <h2 class="mb-4">Detalhes do Usuário</h2>
-        <div v-if="loading" class="text-center">Carregando...</div>
+        <div v-if="loading" class="text-center">
+            <!-- Adicionando um GIF de loading -->
+            <img src="../assets/loading.gif" alt="Carregando...">
+        </div>
         <div v-else>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <!-- Coluna para o avatar -->
-                        <div class="col-md-4 mb-3 text-center">
-                            <img :src="user.avatar_url" class="rounded-circle img-fluid" alt="Avatar">
+            <div class="row">
+                <!-- Card com avatar e detalhes do usuário -->
+                <div class="col-md-5">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <!-- Coluna para o avatar -->
+                                <div class="col-md-6 mb-3 text-center">
+                                    <img :src="user.avatar_url" class="rounded-circle img-fluid" alt="Avatar">
+                                </div>
+                                <!-- Coluna para os detalhes do usuário -->
+                                <div class="col-md-6 mb-3">
+                                    <h3 class="card-title"><strong>{{ user.login }}</strong></h3>
+                                    <p class="card-text small-text">Data de Registro: {{ formatDate(user.created_at) }}</p>
+                                    <div class="card" style="max-width: fit-content;margin: 0 auto;">
+                                        <div class="card-body">                                    
+                                            <p class="card-text small-text">Repositórios: {{ user.public_repos }}</p>
+                                            <button v-if="showMoreButton" @click="showMore" class="btn btn-info">Ver todos</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <!-- Coluna para os detalhes do usuário -->
-                        <div class="col-md-5 mb-3">
-                            <h3 class="card-title">{{ user.login }}</h3>
-                            <p class="card-text">Data de Registro: {{ formatDate(user.created_at) }}</p>
-                            <p class="card-text">Repositórios: {{ user.public_repos }}</p>
-                        </div>
-                        <!-- Coluna para a lista de repositórios -->
-                        <div class="col-md-3">
-                            <h4 class="card-title">Repositórios:</h4>
+                    </div>
+                </div>
+                <!-- Card com lista de repositórios -->
+                <div class="col-md-7">
+                    <div class="card mb-3" :style="{ height: repoListHeight }">
+                        <div class="card-body">
+                            <h4 class="card-title"><strong>Repositórios:</strong></h4>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item" v-for="repo in repos" :key="repo.id">
+                                <li class="list-group-item" v-for="(repo, index) in displayedRepos" :key="index">
                                     <a :href="repo.html_url" target="_blank">{{ repo.name }}</a>
                                 </li>
                             </ul>
+                            <button v-if="showMoreButton" @click="showMore" class="btn btn-light">Ver mais</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <router-link to="/" class="btn btn-secondary my-3 mx-3">Voltar</router-link>
-            <button @click="saveLocally" class="btn btn-primary my-3">Salvar Localmente</button>
         </div>
+        <router-link to="/" class="btn btn-secondary my-3 mx-3">Voltar</router-link>
+        <button @click="saveLocally" class="btn btn-primary my-3">Salvar Localmente</button>
     </div>
 </template>
 
@@ -44,8 +62,15 @@ export default {
         return {
             user: {},
             repos: [],
-            loading: true
+            loading: true,
+            showMoreButton: false,
+            repoListHeight: 'auto'
         };
+    },
+    computed: {
+        displayedRepos() {
+            return this.repos.slice(0, 10);
+        }
     },
     methods: {
         async fetchUser() {
@@ -62,6 +87,7 @@ export default {
                 const response = await axios.get(`https://api.github.com/users/${this.$route.params.login}/repos`);
                 this.repos = response.data;
                 this.loading = false;
+                this.checkShowMoreButton();
             } catch (error) {
                 console.error('Erro ao buscar os repositórios do usuário:', error);
             }
@@ -90,6 +116,17 @@ export default {
             } catch (error) {
                 console.error('Erro ao salvar os dados do usuário localmente:', error);
             }
+        },
+        checkShowMoreButton() {
+            if (this.repos.length > 10) {
+                this.showMoreButton = true;
+            }
+        },
+        showMore() {
+            const remainingRepos = this.repos.slice(10);
+            this.displayedRepos.push(...remainingRepos);
+            this.showMoreButton = false;
+            this.repoListHeight = 'auto';
         }
     },
     mounted() {

@@ -1,19 +1,22 @@
 <template>
-    <div class="container mt-4">
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <input type="text" v-model="search" placeholder="Buscar desenvolvedor"
-                class="form-control rounded-pill shadow-sm mb-3">
+                    class="form-control search-input mb-3">
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-body shadow-sm">
+                    <div class="card-body">
                         <div class="row align-items-center mb-3">
-                            <div class="col-md-4 cursor-pointer text-left" @click="sortBy('login')"><strong>Avatar</strong></div>
-                            <div class="col-md-4 cursor-pointer text-left" @click="sortBy('created_at')"><strong>Usuário</strong></div>
-                            <div class="col-md-4 cursor-pointer text-right" @click="sortBy('public_repos')"><strong>Repositórios</strong></div>
+                            <div class="col-md-4 cursor-pointer text-left" @click="sortBy('login')"><strong
+                                    class="card-title">Avatar</strong></div>
+                            <div class="col-md-4 cursor-pointer text-left" @click="sortBy('created_at')"><strong
+                                    class="card-title">Usuário</strong></div>
+                            <div class="col-md-4 cursor-pointer text-right" @click="sortBy('public_repos')"><strong
+                                    class="card-title">Repositórios</strong></div>
                         </div>
                         <hr>
                         <div v-for="developer in filteredDevelopers" :key="developer.id" @click="showDetails(developer)"
@@ -24,8 +27,8 @@
                                         <img class="user-avatar me-2" :src="developer.avatar_url" alt="Avatar" style="max-width: 50px;">
                                     </div>
                                     <div class="col-md-4 text-left">
-                                        <div><strong>{{ developer.login }}</strong></div>
-                                        <div><small>Usuário desde {{ formatDate(developer.created_at) }}</small></div>
+                                        <strong class="card-title">{{ developer.login }}</strong>
+                                        <div class="small-text">Usuário desde {{ formatDate(developer.created_at) }}</div>
                                     </div>
                                     <div class="col-md-4 text-right">{{ developer.public_repos }}</div>
                                 </div>
@@ -35,8 +38,8 @@
                 </div>
             </div>
         </div>
-    </div>
-</template>
+    </div></template>
+
 
 <script>
 import axios from 'axios';
